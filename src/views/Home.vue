@@ -17,11 +17,19 @@
                           .filter(({ indexId }) => indexId === 'items')[0]
                           .hits.map((item) => {
                             let name = item.name.toLowerCase();
+                            let description = item.description.toLowerCase();
                             let keyword = searchKeyword || '';
-                            return name.substring(
-                              name.indexOf(keyword.toLowerCase())
-                            );
-                          })
+                            var matched = [];
+                            matched = (name + ' ' + description)
+                              .split(' ')
+                              .filter(
+                                (item) =>
+                                  item
+                                    .toLowerCase()
+                                    .indexOf(keyword.toLowerCase()) > -1
+                              );
+                            return matched;
+                          }).flat(1)
                           .sort()
                           .filter(function (item, pos, ary) {
                             return !pos || item != ary[pos - 1];
@@ -31,7 +39,6 @@
                       @update:search-input="refine"
                       :search-input.sync="searchKeyword"
                       @change="onSelect"
-                      clearable
                     >
                     </v-combobox>
                   </template>
@@ -130,7 +137,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  So you can pass any parameters supported by the search endpoint below.
   //  queryBy is required.
   additionalSearchParameters: {
-    queryBy: "name",
+    queryBy: "name,description",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
