@@ -20,23 +20,26 @@
                             let description = item.description.toLowerCase();
                             let keyword = searchKeyword || '';
                             var matched = [];
-                            matched = (name + ' ' + description)
-                              .split(' ')
-                              .filter(
-                                (item) =>
-                                  item
-                                    .toLowerCase()
-                                    .indexOf(keyword.toLowerCase()) > -1
-                              );
+                            if (keyword.length > 0) {
+                              matched = (name + ' ' + description)
+                                .split(' ')
+                                .filter(
+                                  (item) =>
+                                    item
+                                      .toLowerCase()
+                                      .indexOf(keyword.toLowerCase()) > -1
+                                );
+                            }
                             return matched;
-                          }).flat(1)
+                          })
+                          .flat(1)
                           .sort()
                           .filter(function (item, pos, ary) {
                             return !pos || item != ary[pos - 1];
                           })
                       "
                       placeholder="Search here…"
-                      @update:search-input="refine"
+                      @update:search-input="startSearch(refine)"
                       :search-input.sync="searchKeyword"
                       @change="onSelect"
                     >
@@ -120,6 +123,7 @@
 <script>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import InfiniteHits from "@/components/InfiniteHits";
+import debounce from "debounce";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -166,6 +170,12 @@ export default {
         }
       }
     },
+
+    startSearch: debounce(function (refine) {
+      if (this.searchKeyword && this.searchKeyword.length > 0) {
+        refine();
+      }
+    }, 500),
   },
 };
 </script>
