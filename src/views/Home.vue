@@ -27,7 +27,7 @@
                                   (item) =>
                                     item
                                       .toLowerCase()
-                                      .indexOf(keyword.toLowerCase()) > -1
+                                      .indexOf(keyword.toLowerCase()) == 0
                                 );
                             }
                             return matched;
@@ -52,7 +52,6 @@
                 <ais-configure
                   :query="query"
                   :query-parameters="{ page: page }"
-                  :queryType="'prefixAll'"
                   :hitsPerPage="hitsPerPage"
                 />
                 <infinite-hits>
@@ -161,20 +160,12 @@ export default {
   methods: {
     onSelect(selected) {
       if (selected) {
-        console.log(selected);
-        console.log(typeof selected);
-        if (typeof selected == "object") {
-          this.query = selected.name;
-        } else {
-          this.query = selected;
-        }
+        this.query = selected;
       }
     },
 
     startSearch: debounce(function (refine) {
-      if (this.searchKeyword && this.searchKeyword.length > 0) {
-        refine();
-      }
+      refine();
     }, 500),
   },
 };
