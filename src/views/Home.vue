@@ -13,9 +13,20 @@
                       dense
                       solo
                       :items="
-                        indices.filter(({ indexId }) => indexId === 'items')[0].hits
+                        indices
+                          .filter(({ indexId }) => indexId === 'items')[0]
+                          .hits.map((item) => {
+                            let name = item.name.toLowerCase();
+                            let keyword = searchKeyword || '';
+                            return name.substring(
+                              name.indexOf(keyword.toLowerCase())
+                            );
+                          })
+                          .sort()
+                          .filter(function (item, pos, ary) {
+                            return !pos || item != ary[pos - 1];
+                          })
                       "
-                      item-text="name"
                       placeholder="Search here…"
                       @update:search-input="refine"
                       :search-input.sync="searchKeyword"
@@ -30,7 +41,7 @@
               <ais-index index-name="items">
                 <ais-configure
                   :query="query"
-                  :query-parameters="{'page': page}"
+                  :query-parameters="{ page: page }"
                   :queryType="'prefixAll'"
                   :hitsPerPage="hitsPerPage"
                 />
@@ -66,10 +77,16 @@
                         </div>
                       </div>
                       <div class="mt-4 mt-sm-0">
-                        <h2 class="title">{{ item.name }}</h2>
-                        <div class="hit-name subtitle-2">
+                        <div class="hit-name title">
                           <ais-highlight
                             attribute="name"
+                            :hit="item"
+                          ></ais-highlight>
+                        </div>
+
+                        <div class="hit-description subtitle-2">
+                          <ais-highlight
+                            attribute="description"
                             :hit="item"
                           ></ais-highlight>
                         </div>
@@ -80,13 +97,6 @@
                             <v-icon>mdi-heart</v-icon>
                           </v-btn>
                         </div>
-
-                        <!-- <div class="hit-description subtitle-2">
-                          <ais-highlight
-                            attribute="description"
-                            :hit="item"
-                          ></ais-highlight>
-                        </div> -->
                       </div>
                     </div>
                   </template>
@@ -102,7 +112,7 @@
 
 <script>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
-import InfiniteHits from '@/components/InfiniteHits';
+import InfiniteHits from "@/components/InfiniteHits";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -133,23 +143,23 @@ export default {
       searchClient,
       query: "",
       page: 1,
-      searchKeyword: null,
-      hitsPerPage: 12
+      searchKeyword: "",
+      hitsPerPage: 12,
     };
   },
   methods: {
     onSelect(selected) {
       if (selected) {
         console.log(selected);
-        console.log(typeof(selected));
-        if (typeof(selected) == "object") {
+        console.log(typeof selected);
+        if (typeof selected == "object") {
           this.query = selected.name;
         } else {
           this.query = selected;
         }
       }
     },
-  }
+  },
 };
 </script>
 
