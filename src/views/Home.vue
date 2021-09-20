@@ -223,6 +223,8 @@
                           @update:search-input="startSearch(refine)"
                           :search-input.sync="searchKeyword"
                           @change="onSelect"
+                          clearable
+                          hide-selected
                         >
                         </v-combobox>
                       </template>
@@ -233,16 +235,6 @@
             </v-row>
           </v-container>
         </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            text
-            @click="searchModal = false"
-          >
-            Close
-          </v-btn>
-        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
@@ -349,11 +341,15 @@ export default {
     onSelect(selected) {
       if (selected) {
         this.query = selected;
+        this.toggleSearchModal(false);
       }
     },
 
     startSearch: debounce(function (refine) {
       refine();
+      if (this.searchModal && !this.searchKeyword) {
+        this.query = "";
+      }
     }, 500),
   },
   mounted() {
