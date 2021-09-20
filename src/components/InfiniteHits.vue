@@ -1,6 +1,6 @@
 <template>
   <v-row v-if="state" class="hits-list">
-    <v-col cols="12" sm="6" lg="4" v-for="hit in state.hits" :key="hit.objectID">
+    <v-col cols="12" v-for="hit in state.hits" :key="hit.objectID">
       <slot name="item" :item="hit"> </slot>
     </v-col>
     <li class="sentinel" v-observe-visibility="visibilityChanged" />

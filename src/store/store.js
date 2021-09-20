@@ -7,7 +7,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    Sidebar_drawer: null,
+    searchDialog: false,
+    Sidebar_drawer: true,
     Customizer_drawer: false,
     SidebarColor: "white", //Change Sidebar Color || 'white', | "#2b2b2b" | "rgb(44, 59, 164)" | "rgb(96, 44, 164)" | "rgb(151, 210, 219)" | "rgb(77, 86, 100)"
     SidebarBg: "",
@@ -34,14 +35,21 @@ export default new Vuex.Store({
     SET_AUTH_MODAL(state, payload) {
       state.authModal = payload;
     },
+    SET_SEARCH_DIALOG(state, payload) {
+      state.searchDialog = payload;
+    },
   },
   actions: {
     toggleAuthModal({ commit }, show) {
       commit('SET_AUTH_MODAL', show);
+    },
+    toggleSearchModal({ commit }, show) {
+      commit('SET_SEARCH_DIALOG', show);
     }
   },
   getters: {
-    authModal: (state) => state.authModal
+    authModal: (state) => state.authModal,
+    searchDialog: (state) => state.searchDialog
   },
   namespace: true,
   modules: {
