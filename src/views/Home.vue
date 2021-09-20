@@ -25,28 +25,70 @@
                                 name="NumericMenu"
                                 :value="item.value"
                                 @click.prevent="refine(item.value)"
-                                :checked="item.isRefined ? 'checked' : '' "
+                                :checked="(item.isRefined && !showCustomDateRangePicker) ? 'checked' : '' "
                               />
                               <span class="ais-NumericMenu-labelText">
                                 {{ item.label }}
                               </span>
                             </label>
                           </li>
-                          <li class="ais-NumericMenu-item" :class="item.isRefined ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(items.length - 1, items.length)" :key="index + 'last'">
+                          <li class="ais-NumericMenu-item" :class="showCustomDateRangePicker ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(items.length - 1, items.length)" :key="index + 'last'">
                             <label class="ais-NumericMenu-label">
                               <input
                                 class="ais-NumericMenu-radio"
                                 type="radio"
                                 name="NumericMenu"
                                 :value="item.value"
-                                @click.prevent="refine(item.value)"
-                                :checked="item.isRefined ? 'checked' : '' "
+                                @click.prevent="showCustomDateRangePicker = true"
+                                :checked="showCustomDateRangePicker ? 'checked' : '' "
                               />
                               <span class="ais-NumericMenu-labelText">
                                 {{ item.label }}
                               </span>
                             </label>
                           </li>
+                          <v-menu
+                            ref="menu"
+                            v-model="menu"
+                            :close-on-content-click="false"
+                            :return-value.sync="dates"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
+                            v-if="showCustomDateRangePicker"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="dateRangeText"
+                                placeholder="Select dates"
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="dates"
+                              range
+                              no-title
+                            >
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="menu = false"
+                              >
+                                Cancel
+                              </v-btn>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.menu.save(dates)"
+                              >
+                                OK
+                              </v-btn>
+                            </v-date-picker>
+                          </v-menu>
                         </ul>
                       </template>
                     </ais-numeric-menu>
@@ -248,6 +290,9 @@ export default {
       page: 1,
       searchKeyword: "",
       hitsPerPage: 5,
+      menu: false,
+      dates: [],
+      showCustomDateRangePicker: false,
       dateItems: [
         { label: "All" },
         { 
@@ -293,7 +338,10 @@ export default {
       set(val) {
         this.toggleSearchModal(val);
       }
-    }
+    },
+    dateRangeText () {
+      return this.dates.join(' ~ ')
+    },
   },
   methods: {
     ...mapActions(["toggleSearchModal"]),
