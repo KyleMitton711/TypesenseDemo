@@ -4,6 +4,7 @@
     clipped-left
     clipped-right
     color="white"
+    hide-on-scroll
   >
     <div @click="showhideLogo">
       <v-app-bar-nav-icon
