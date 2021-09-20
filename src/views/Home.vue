@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="pt-0">
-    <Banner />
+    <Banner v-if="showBanner" />
     <v-row>
       <v-col cols="12">
         <ais-instant-search index-name="items" :search-client="searchClient">
@@ -318,6 +318,7 @@ export default {
           end: moment().endOf('day').valueOf() 
         }
       ],
+      showBanner: true
     };
   },
   computed: {
@@ -340,6 +341,7 @@ export default {
 
     onSelect(selected) {
       if (selected) {
+        this.showBanner = false;
         this.query = selected;
         this.toggleSearchModal(false);
       }
