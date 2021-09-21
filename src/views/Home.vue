@@ -344,6 +344,7 @@ export default {
         this.showBanner = false;
         this.query = selected;
         this.toggleSearchModal(false);
+        this.page = 0;
       }
     },
 
@@ -352,7 +353,7 @@ export default {
       if (this.searchModal && !this.searchKeyword) {
         this.query = "";
       }
-    }, 500),
+    }, 500)
   },
   mounted() {
     window.moment = moment;

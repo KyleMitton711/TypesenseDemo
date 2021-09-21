@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import { createWidgetMixin } from 'vue-instantsearch';
-import { connectInfiniteHits } from 'instantsearch.js/es/connectors';
+import { createWidgetMixin } from "vue-instantsearch";
+import { connectInfiniteHits } from "instantsearch.js/es/connectors";
 export default {
   name: "InfiniteHits",
   mixins: [createWidgetMixin({ connector: connectInfiniteHits })],
@@ -18,6 +18,14 @@ export default {
       if (isVisible && !this.state.isLastPage) {
         this.state.showMore();
       }
+    },
+  },
+  watch: {
+    state(val) {
+      if (val.results.page == 0) {
+        window.scrollTo(0, 0);
+      }
+      console.log(val);
     },
   },
 };
