@@ -25,7 +25,6 @@ export default {
       if (val.results.page == 0) {
         window.scrollTo(0, 0);
       }
-      console.log(val);
     },
   },
 };

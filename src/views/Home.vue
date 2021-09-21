@@ -340,11 +340,12 @@ export default {
     ...mapActions(["toggleSearchModal"]),
 
     onSelect(selected) {
+      this.page = 1;
+      window.scrollTo(0, 0);
       if (selected) {
         this.showBanner = false;
         this.query = selected;
         this.toggleSearchModal(false);
-        this.page = 0;
       }
     },
 
