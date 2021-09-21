@@ -109,7 +109,7 @@
                   <v-col cols="12" sm="9">
                     <ais-configure
                       :query="query"
-                      :query-parameters="{ page: page }"
+                      :page="page"
                       :hitsPerPage="hitsPerPage"
                     />
                     <infinite-hits>
@@ -244,7 +244,7 @@
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import debounce from "debounce";
 import moment from "moment";
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import InfiniteHits from "@/components/InfiniteHits";
 import Banner from "@/components/Banner";
 
@@ -340,12 +340,15 @@ export default {
     ...mapActions(["toggleSearchModal"]),
 
     onSelect(selected) {
-      this.page = 1;
+      console.log(this.page, selected);
+      this.page = 0;
       window.scrollTo(0, 0);
       if (selected) {
         this.showBanner = false;
-        this.query = selected;
-        this.toggleSearchModal(false);
+        setTimeout(() => {
+          this.query = selected;
+          this.toggleSearchModal(false);
+        }, 400);
       }
     },
 
