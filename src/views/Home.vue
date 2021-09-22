@@ -6,7 +6,7 @@
         <ais-instant-search index-name="items" :search-client="searchClient">
           <v-row no-gutters>
             <v-col cols="12">
-              <!-- <ais-current-refinements /> -->
+              <ais-current-refinements :transform-items="transformItems"/>
               <ais-index index-name="items">
                 <v-row>
                   <v-col cols="12" sm="3" v-if="Sidebar_drawer">
@@ -112,7 +112,7 @@
                       :page="page"
                       :hitsPerPage="hitsPerPage"
                     />
-                    <infinite-hits>
+                    <infinite-hits @filter-selected="hideBanner">
                       <template slot="item" slot-scope="{ item }">
                         <div
                           class="
@@ -340,7 +340,6 @@ export default {
     ...mapActions(["toggleSearchModal"]),
 
     onSelect(selected) {
-      console.log(this.page, selected);
       this.page = 0;
       window.scrollTo(0, 0);
       if (selected) {
@@ -357,7 +356,18 @@ export default {
       if (this.searchModal && !this.searchKeyword) {
         this.query = "";
       }
-    }, 500)
+    }, 500),
+
+    transformItems(items) {
+      if (items.length > 0) {
+        this.hideBanner()
+      }
+      return [];
+    },
+
+    hideBanner() {
+      this.showBanner = false;
+    }
   },
   mounted() {
     window.moment = moment;
