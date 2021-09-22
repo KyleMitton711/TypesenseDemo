@@ -9,164 +9,173 @@
               <ais-current-refinements :transform-items="transformItems"/>
               <ais-index index-name="items">
                 <v-row>
-                  <v-col cols="12" sm="3" v-if="Sidebar_drawer">
-                    <h2 class="title">DATE</h2>
-                    <ais-numeric-menu
-                      attribute="added"
-                      :items="dateItems"
+                  <v-col cols="12" style="position: relative;">
+                    <v-navigation-drawer
+                      v-model="sidebarShow"
+                      class="px-3"
+                      overlay-opacity="0"
+                      absolute
+                      mini-variant-width="70"
+                      mobile-breakpoint="960"
                     >
-                      <template v-slot="{ items, refine }">
-                        <ul class="ais-NumericMenu-list">
-                          <li class="ais-NumericMenu-item" :class="item.isRefined ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(0, -1)" :key="index">
-                            <label class="ais-NumericMenu-label">
-                              <input
-                                class="ais-NumericMenu-radio"
-                                type="radio"
-                                name="NumericMenu"
-                                :value="item.value"
-                                @click.prevent="refine(item.value)"
-                                :checked="(item.isRefined && !showCustomDateRangePicker) ? 'checked' : '' "
-                              />
-                              <span class="ais-NumericMenu-labelText">
-                                {{ item.label }}
-                              </span>
-                            </label>
-                          </li>
-                          <li class="ais-NumericMenu-item" :class="showCustomDateRangePicker ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(items.length - 1, items.length)" :key="index + 'last'">
-                            <label class="ais-NumericMenu-label">
-                              <input
-                                class="ais-NumericMenu-radio"
-                                type="radio"
-                                name="NumericMenu"
-                                :value="item.value"
-                                @click.prevent="showCustomDateRangePicker = true"
-                                :checked="showCustomDateRangePicker ? 'checked' : '' "
-                              />
-                              <span class="ais-NumericMenu-labelText">
-                                {{ item.label }}
-                              </span>
-                            </label>
-                          </li>
-                          <v-menu
-                            ref="menu"
-                            v-model="menu"
-                            :close-on-content-click="false"
-                            :return-value.sync="dates"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                            v-if="showCustomDateRangePicker"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                v-model="dateRangeText"
-                                placeholder="Select dates"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                              v-model="dates"
-                              range
-                              no-title
+                      <h2 class="title">DATE</h2>
+                      <ais-numeric-menu
+                        attribute="added"
+                        :items="dateItems"
+                      >
+                        <template v-slot="{ items, refine }">
+                          <ul class="ais-NumericMenu-list">
+                            <li class="ais-NumericMenu-item" :class="item.isRefined ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(0, -1)" :key="index">
+                              <label class="ais-NumericMenu-label">
+                                <input
+                                  class="ais-NumericMenu-radio"
+                                  type="radio"
+                                  name="NumericMenu"
+                                  :value="item.value"
+                                  @click.prevent="refine(item.value)"
+                                  :checked="(item.isRefined && !showCustomDateRangePicker) ? 'checked' : '' "
+                                />
+                                <span class="ais-NumericMenu-labelText">
+                                  {{ item.label }}
+                                </span>
+                              </label>
+                            </li>
+                            <li class="ais-NumericMenu-item" :class="showCustomDateRangePicker ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(items.length - 1, items.length)" :key="index + 'last'">
+                              <label class="ais-NumericMenu-label">
+                                <input
+                                  class="ais-NumericMenu-radio"
+                                  type="radio"
+                                  name="NumericMenu"
+                                  :value="item.value"
+                                  @click.prevent="showCustomDateRangePicker = true"
+                                  :checked="showCustomDateRangePicker ? 'checked' : '' "
+                                />
+                                <span class="ais-NumericMenu-labelText">
+                                  {{ item.label }}
+                                </span>
+                              </label>
+                            </li>
+                            <v-menu
+                              ref="menu"
+                              v-model="menu"
+                              :close-on-content-click="false"
+                              :return-value.sync="dates"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                              v-if="showCustomDateRangePicker"
                             >
-                              <v-spacer></v-spacer>
-                              <v-btn
-                                text
-                                color="primary"
-                                @click="menu = false"
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  v-model="dateRangeText"
+                                  placeholder="Select dates"
+                                  prepend-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="dates"
+                                range
+                                no-title
                               >
-                                Cancel
-                              </v-btn>
-                              <v-btn
-                                text
-                                color="primary"
-                                @click="$refs.menu.save(dates)"
-                              >
-                                OK
-                              </v-btn>
-                            </v-date-picker>
-                          </v-menu>
-                        </ul>
-                      </template>
-                    </ais-numeric-menu>
-                    <h2 class="title">PRICE</h2>
-                    <ais-numeric-menu
-                      attribute="price"
-                      :items="[
-                        { label: 'All' },
-                        { label: '<= 10$', end: 10 },
-                        { label: '10$ - 100$', start: 10, end: 100 },
-                        { label: '100$ - 500$', start: 100, end: 500 },
-                        { label: '>= 500$', start: 500 },
-                      ]"
-                    />
-                    <h2 class="title">MANUFACTURER</h2>
-                    <ais-refinement-list attribute="manufacturer" />
-                  </v-col>
-                  <v-col cols="12" sm="9">
-                    <ais-configure
-                      :query="query"
-                      :page="page"
-                      :hitsPerPage="hitsPerPage"
-                    />
-                    <infinite-hits @filter-selected="hideBanner">
-                      <template slot="item" slot-scope="{ item }">
-                        <div
-                          class="
-                            border-bottom
-                            pa-5
-                            d-flex
-                            flex-wrap flex-sm-nowrap
-                          "
-                        >
-                          <div class="text-center d-flex flex-column mr-5">
-                            <img
-                              :src="'https://cdn-demo.algolia.com/bestbuy-0118/4984700_sb.jpg'"
-                              align="left"
-                              class=""
-                            />
-                          </div>
-                          <div class="mt-4 mt-sm-0">
-                            <div class="hit-name title d-flex">
-                              <ais-highlight
-                                attribute="name"
-                                :hit="item"
-                              ></ais-highlight>
-                              <div
-                                class="
-                                  hit-price
-                                  info--text
-                                  ml-2
-                                  font-weight-medium
-                                  text-truncate
-                                "
-                              >
-                                $ {{ item.price }}
+                                <v-spacer></v-spacer>
+                                <v-btn
+                                  text
+                                  color="primary"
+                                  @click="menu = false"
+                                >
+                                  Cancel
+                                </v-btn>
+                                <v-btn
+                                  text
+                                  color="primary"
+                                  @click="$refs.menu.save(dates)"
+                                >
+                                  OK
+                                </v-btn>
+                              </v-date-picker>
+                            </v-menu>
+                          </ul>
+                        </template>
+                      </ais-numeric-menu>
+                      <h2 class="title">PRICE</h2>
+                      <ais-numeric-menu
+                        attribute="price"
+                        :items="[
+                          { label: 'All' },
+                          { label: '<= 10$', end: 10 },
+                          { label: '10$ - 100$', start: 10, end: 100 },
+                          { label: '100$ - 500$', start: 100, end: 500 },
+                          { label: '>= 500$', start: 500 },
+                        ]"
+                      />
+                      <h2 class="title">MANUFACTURER</h2>
+                      <ais-refinement-list attribute="manufacturer" />
+                    </v-navigation-drawer>
+                    <div class="product-list" :class="sidebarShow ? 'sidebar-show' : ''">
+                      <ais-configure
+                        :query="query"
+                        :page="page"
+                        :hitsPerPage="hitsPerPage"
+                      />
+                      <infinite-hits @filter-selected="hideBanner">
+                        <template slot="item" slot-scope="{ item }">
+                          <div
+                            class="
+                              border-bottom
+                              pa-5
+                              d-flex
+                              flex-wrap flex-sm-nowrap
+                            "
+                          >
+                            <div class="text-center d-flex flex-column mr-5">
+                              <img
+                                :src="'https://cdn-demo.algolia.com/bestbuy-0118/4984700_sb.jpg'"
+                                align="left"
+                                class=""
+                              />
+                            </div>
+                            <div class="mt-4 mt-sm-0">
+                              <div class="hit-name title d-flex">
+                                <ais-highlight
+                                  attribute="name"
+                                  :hit="item"
+                                ></ais-highlight>
+                                <div
+                                  class="
+                                    hit-price
+                                    info--text
+                                    ml-2
+                                    font-weight-medium
+                                    text-truncate
+                                  "
+                                >
+                                  $ {{ item.price }}
+                                </div>
+                              </div>
+
+                              <div class="hit-description subtitle-2">
+                                <ais-highlight
+                                  attribute="description"
+                                  :hit="item"
+                                ></ais-highlight>
+                              </div>
+
+                              <div class="d-flex mt-4">
+                                <v-btn depressed color="primary">
+                                  Add to cart
+                                </v-btn>
+                                <v-btn icon color="red" class="ml-4">
+                                  <v-icon>mdi-heart</v-icon>
+                                </v-btn>
                               </div>
                             </div>
-
-                            <div class="hit-description subtitle-2">
-                              <ais-highlight
-                                attribute="description"
-                                :hit="item"
-                              ></ais-highlight>
-                            </div>
-
-                            <div class="d-flex mt-4">
-                              <v-btn depressed color="primary">
-                                Add to cart
-                              </v-btn>
-                              <v-btn icon color="red" class="ml-4">
-                                <v-icon>mdi-heart</v-icon>
-                              </v-btn>
-                            </div>
                           </div>
-                        </div>
-                      </template>
-                    </infinite-hits>
+                        </template>
+                      </infinite-hits>
+                    </div>
                   </v-col>
                 </v-row>
               </ais-index>
@@ -244,7 +253,7 @@
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import debounce from "debounce";
 import moment from "moment";
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 import InfiniteHits from "@/components/InfiniteHits";
 import Banner from "@/components/Banner";
 
@@ -332,12 +341,23 @@ export default {
         this.toggleSearchModal(val);
       }
     },
+    sidebarShow: {
+      get() {
+        return this.Sidebar_drawer;
+      },
+      set(val) {
+        this.setSidebarDrawer(val);
+      }
+    },
     dateRangeText () {
       return this.dates.join(' ~ ')
     },
   },
   methods: {
     ...mapActions(["toggleSearchModal"]),
+    ...mapMutations({
+      setSidebarDrawer: "SET_SIDEBAR_DRAWER",
+    }),
 
     onSelect(selected) {
       this.page = 0;
@@ -440,6 +460,16 @@ li.ais-Hits-item {
   li.ais-Hits-item {
     width: 33.33%;
     float: left;
+  }
+}
+
+.product-list {
+  padding-left: 0;
+  &.sidebar-show {
+    padding-left: 235px;
+  }
+  @media (max-width: 960px) {
+    padding-left: 0!important;
   }
 }
 </style>
