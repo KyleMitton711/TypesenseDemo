@@ -3,6 +3,19 @@
     <Banner v-if="showBanner" />
     <v-row>
       <v-col cols="12">
+        <div class="d-flex justify-end">
+          <v-btn-toggle v-model="isListViewMode" mandatory>
+            <v-btn>
+              <v-icon>mdi-grid</v-icon>
+            </v-btn>
+
+            <v-btn>
+              <v-icon>mdi-format-list-checkbox</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+        </div>
+      </v-col>
+      <v-col cols="12">
         <ais-instant-search index-name="items" :search-client="searchClient">
           <v-row no-gutters>
             <v-col cols="12">
@@ -190,7 +203,7 @@
       permanent
     >
       <v-card>
-        <v-card-text>
+        <v-card-text class="pa-0">
           <v-container>
             <v-row>
               <v-col cols="12">
@@ -202,6 +215,7 @@
                         <v-combobox
                           dense
                           solo
+                          hide-details
                           :items="
                             indices
                               .filter(({ indexId }) => indexId === 'items')[0]
@@ -250,43 +264,23 @@
 </template>
 
 <script>
-import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import debounce from "debounce";
 import moment from "moment";
 import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 import InfiniteHits from "@/components/InfiniteHits";
 import Banner from "@/components/Banner";
-
-const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-  server: {
-    apiKey: process.env.VUE_APP_TYPESENSE_API_KEY, // Be sure to use an API key that only allows search operations
-    nodes: [
-      {
-        host: process.env.VUE_APP_TYPESENSE_HOST,
-        port: process.env.VUE_APP_TYPESENSE_PORT,
-        protocol: process.env.VUE_APP_TYPESENSE_PROTOCAL,
-      },
-    ],
-    // cacheSearchResultsForSeconds: 2 * 60, // Cache search results from server. Defaults to 2 minutes. Set to 0 to disable caching.
-  },
-  // The following parameters are directly passed to Typesense's search API endpoint.
-  //  So you can pass any parameters supported by the search endpoint below.
-  //  queryBy is required.
-  additionalSearchParameters: {
-    queryBy: "name,description",
-  },
-});
-const searchClient = typesenseInstantsearchAdapter.searchClient;
+import searchMixin from "@/mixins/searchMixin";
 
 export default {
   name: "Home",
+  mixins: [searchMixin],
   components: { 
     InfiniteHits, 
     Banner
   },
   data() {
     return {
-      searchClient,
+      // searchClient,
       query: "",
       page: 1,
       searchKeyword: "",
@@ -331,7 +325,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["searchDialog"]),
+    ...mapGetters(["searchDialog", "viewMode"]),
     ...mapState(["Sidebar_drawer"]),
     searchModal: {
       get() {
@@ -352,9 +346,17 @@ export default {
     dateRangeText () {
       return this.dates.join(' ~ ')
     },
+    isListViewMode: {
+      get() {
+        return this.viewMode ? 1 : 0;
+      },
+      set(val) {
+        this.toggleViewMode(val == 1 ? true : false);
+      }
+    }
   },
   methods: {
-    ...mapActions(["toggleSearchModal"]),
+    ...mapActions(["toggleSearchModal", "toggleViewMode"]),
     ...mapMutations({
       setSidebarDrawer: "SET_SIDEBAR_DRAWER",
     }),

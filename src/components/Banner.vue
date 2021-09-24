@@ -5,7 +5,8 @@
       <p>Amazon - Fire TV Stick with Alexa Voice Remote - Black</p>
       <div class="d-flex align-center">
         <v-btn class="mr-2" @click="learnMoreDialog = true"> learn more </v-btn>
-        <span>for manufacturer</span>
+        <v-btn class="mr-2" @click="searchModal = true"> search </v-btn>
+        <!-- <span>for manufacturer</span> -->
       </div>
     </v-col>
     <v-dialog
@@ -19,12 +20,27 @@
   </v-row>
 </template>
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Banner",
   data() {
     return {
       learnMoreDialog: false
     };
+  },
+  computed: {
+    ...mapState(["searchDialog"]),
+    searchModal: {
+      get() {
+        return this.searchDialog;
+      },
+      set(val) {
+        this.toggleSearchModal(val);
+      }
+    }
+  },
+  methods: {
+    ...mapActions(["toggleSearchModal"]),
   }
 };
 </script>

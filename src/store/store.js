@@ -8,13 +8,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     searchDialog: false,
-    Sidebar_drawer: true,
+    Sidebar_drawer: false,
     Customizer_drawer: false,
     SidebarColor: "white", //Change Sidebar Color || 'white', | "#2b2b2b" | "rgb(44, 59, 164)" | "rgb(96, 44, 164)" | "rgb(151, 210, 219)" | "rgb(77, 86, 100)"
     SidebarBg: "",
     navbarColor: "white",
     setHorizontalLayout: false, // Horizontal layout
-    authModal: ""
+    authModal: "",
+    isListViewMode: true,
+    showMainFilterMenu: false
   },
   mutations: {
     SET_SIDEBAR_DRAWER(state, payload) {
@@ -38,6 +40,12 @@ export default new Vuex.Store({
     SET_SEARCH_DIALOG(state, payload) {
       state.searchDialog = payload;
     },
+    SET_VIEW_MODE(state, payload) {
+      state.isListViewMode = payload;
+    },
+    SET_MAIN_FILTER_MENU(state, payload) {
+      state.showMainFilterMenu = payload;
+    },
   },
   actions: {
     toggleAuthModal({ commit }, show) {
@@ -45,11 +53,19 @@ export default new Vuex.Store({
     },
     toggleSearchModal({ commit }, show) {
       commit('SET_SEARCH_DIALOG', show);
-    }
+    },
+    toggleViewMode({ commit }, mode) {
+      commit('SET_VIEW_MODE', mode);
+    },
+    toggleMainFilterMenu({ commit }, mode) {
+      commit('SET_MAIN_FILTER_MENU', mode);
+    },
   },
   getters: {
     authModal: (state) => state.authModal,
-    searchDialog: (state) => state.searchDialog
+    searchDialog: (state) => state.searchDialog,
+    viewMode: (state) => state.isListViewMode,
+    showMainFilterMenu: (state) => state.showMainFilterMenu
   },
   namespace: true,
   modules: {
