@@ -17,11 +17,10 @@
       open-on-hover
       :close-on-click="false"
       :close-on-content-click="false"
-      :close-delay="1000"
+      :close-delay="500"
       absolute
       content-class="filter-menu"
       bottom
-      value="true"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
