@@ -1,6 +1,13 @@
 <template>
   <v-row v-if="state" class="hits-list">
-    <v-col cols="12" :sm="viewMode ? 12 : 6" :xl="viewMode ? 12 : 4" v-for="hit in state.hits" :key="hit.objectID">
+    <v-col
+      cols="12"
+      :sm="viewMode ? 12 : 6"
+      :lg="viewMode ? 12 : 4"
+      :xl="viewMode ? 12 : 3"
+      v-for="hit in state.hits"
+      :key="hit.objectID"
+    >
       <slot name="item" :item="hit"> </slot>
     </v-col>
     <li class="sentinel" v-observe-visibility="visibilityChanged" />
@@ -30,8 +37,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["viewMode"])
-  }
+    ...mapGetters(["viewMode"]),
+  },
 };
 </script>
 

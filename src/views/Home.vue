@@ -19,10 +19,10 @@
         <ais-instant-search index-name="items" :search-client="searchClient">
           <v-row no-gutters>
             <v-col cols="12">
-              <ais-current-refinements :transform-items="transformItems"/>
+              <ais-current-refinements :transform-items="transformItems" />
               <ais-index index-name="items">
                 <v-row>
-                  <v-col cols="12" style="position: relative;">
+                  <v-col cols="12" style="position: relative">
                     <v-navigation-drawer
                       v-model="sidebarShow"
                       class="px-3"
@@ -32,13 +32,19 @@
                       mobile-breakpoint="960"
                     >
                       <h2 class="title">DATE</h2>
-                      <ais-numeric-menu
-                        attribute="added"
-                        :items="dateItems"
-                      >
+                      <ais-numeric-menu attribute="added" :items="dateItems">
                         <template v-slot="{ items, refine }">
                           <ul class="ais-NumericMenu-list">
-                            <li class="ais-NumericMenu-item" :class="item.isRefined ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(0, -1)" :key="index">
+                            <li
+                              class="ais-NumericMenu-item"
+                              :class="
+                                item.isRefined
+                                  ? 'ais-NumericMenu-item--selected'
+                                  : ''
+                              "
+                              v-for="(item, index) in items.slice(0, -1)"
+                              :key="index"
+                            >
                               <label class="ais-NumericMenu-label">
                                 <input
                                   class="ais-NumericMenu-radio"
@@ -46,22 +52,42 @@
                                   name="NumericMenu"
                                   :value="item.value"
                                   @click.prevent="refine(item.value)"
-                                  :checked="(item.isRefined && !showCustomDateRangePicker) ? 'checked' : '' "
+                                  :checked="
+                                    item.isRefined && !showCustomDateRangePicker
+                                      ? 'checked'
+                                      : ''
+                                  "
                                 />
                                 <span class="ais-NumericMenu-labelText">
                                   {{ item.label }}
                                 </span>
                               </label>
                             </li>
-                            <li class="ais-NumericMenu-item" :class="showCustomDateRangePicker ? 'ais-NumericMenu-item--selected' : '' " v-for="(item, index) in items.slice(items.length - 1, items.length)" :key="index + 'last'">
+                            <li
+                              class="ais-NumericMenu-item"
+                              :class="
+                                showCustomDateRangePicker
+                                  ? 'ais-NumericMenu-item--selected'
+                                  : ''
+                              "
+                              v-for="(item, index) in items.slice(
+                                items.length - 1,
+                                items.length
+                              )"
+                              :key="index + 'last'"
+                            >
                               <label class="ais-NumericMenu-label">
                                 <input
                                   class="ais-NumericMenu-radio"
                                   type="radio"
                                   name="NumericMenu"
                                   :value="item.value"
-                                  @click.prevent="showCustomDateRangePicker = true"
-                                  :checked="showCustomDateRangePicker ? 'checked' : '' "
+                                  @click.prevent="
+                                    showCustomDateRangePicker = true
+                                  "
+                                  :checked="
+                                    showCustomDateRangePicker ? 'checked' : ''
+                                  "
                                 />
                                 <span class="ais-NumericMenu-labelText">
                                   {{ item.label }}
@@ -88,11 +114,7 @@
                                   v-on="on"
                                 ></v-text-field>
                               </template>
-                              <v-date-picker
-                                v-model="dates"
-                                range
-                                no-title
-                              >
+                              <v-date-picker v-model="dates" range no-title>
                                 <v-spacer></v-spacer>
                                 <v-btn
                                   text
@@ -127,7 +149,10 @@
                       <h2 class="title">MANUFACTURER</h2>
                       <ais-refinement-list attribute="manufacturer" />
                     </v-navigation-drawer>
-                    <div class="product-list" :class="sidebarShow ? 'sidebar-show' : ''">
+                    <div
+                      class="product-list"
+                      :class="sidebarShow ? 'sidebar-show' : ''"
+                    >
                       <ais-configure
                         :query="query"
                         :page="page"
@@ -140,33 +165,31 @@
                               border-bottom
                               pa-5
                               d-flex
-                              flex-wrap flex-sm-nowrap
+                              flex-column
+                              align-center
                             "
                           >
-                            <div class="text-center d-flex flex-column mr-5">
+                            <div
+                              class="
+                                text-center
+                                d-flex
+                                flex-column
+                                align-center
+                                thumbnail-image
+                              "
+                            >
                               <img
                                 :src="'https://cdn-demo.algolia.com/bestbuy-0118/4984700_sb.jpg'"
                                 align="left"
                                 class=""
                               />
                             </div>
-                            <div class="mt-4 mt-sm-0">
+                            <div class="mt-4">
                               <div class="hit-name title d-flex">
                                 <ais-highlight
                                   attribute="name"
                                   :hit="item"
                                 ></ais-highlight>
-                                <div
-                                  class="
-                                    hit-price
-                                    info--text
-                                    ml-2
-                                    font-weight-medium
-                                    text-truncate
-                                  "
-                                >
-                                  $ {{ item.price }}
-                                </div>
                               </div>
 
                               <div class="hit-description subtitle-2">
@@ -174,6 +197,18 @@
                                   attribute="description"
                                   :hit="item"
                                 ></ais-highlight>
+                              </div>
+
+                              <div
+                                class="
+                                  hit-price
+                                  info--text
+                                  mt-2
+                                  font-weight-medium
+                                  text-truncate
+                                "
+                              >
+                                $ {{ item.price }}
                               </div>
 
                               <div class="d-flex mt-4">
@@ -197,17 +232,16 @@
         </ais-instant-search>
       </v-col>
     </v-row>
-    <v-dialog
-      v-model="searchModal"
-      width="500"
-      permanent
-    >
+    <v-dialog v-model="searchModal" width="500" permanent>
       <v-card>
         <v-card-text class="pa-0">
           <v-container>
             <v-row>
               <v-col cols="12">
-                <ais-instant-search index-name="items" :search-client="searchClient">
+                <ais-instant-search
+                  index-name="items"
+                  :search-client="searchClient"
+                >
                   <ais-index index-name="items">
                     <ais-configure :hitsPerPage="5" />
                     <ais-autocomplete>
@@ -221,7 +255,8 @@
                               .filter(({ indexId }) => indexId === 'items')[0]
                               .hits.map((item) => {
                                 let name = item.name.toLowerCase();
-                                let description = item.description.toLowerCase();
+                                let description =
+                                  item.description.toLowerCase();
                                 let keyword = searchKeyword || '';
                                 var matched = [];
                                 if (keyword.length > 0) {
@@ -274,9 +309,9 @@ import searchMixin from "@/mixins/searchMixin";
 export default {
   name: "Home",
   mixins: [searchMixin],
-  components: { 
-    InfiniteHits, 
-    Banner
+  components: {
+    InfiniteHits,
+    Banner,
   },
   data() {
     return {
@@ -290,38 +325,38 @@ export default {
       showCustomDateRangePicker: false,
       dateItems: [
         { label: "All" },
-        { 
+        {
           label: "Today",
-          start: moment().startOf('day').valueOf(), 
-          end: moment().endOf('day').valueOf()
+          start: moment().startOf("day").valueOf(),
+          end: moment().endOf("day").valueOf(),
         },
-        { 
-          label: "Yesterday", 
-          start: moment().subtract(1, 'days').startOf('day').valueOf(), 
-          end: moment().subtract(1, 'days').endOf('day').valueOf()
+        {
+          label: "Yesterday",
+          start: moment().subtract(1, "days").startOf("day").valueOf(),
+          end: moment().subtract(1, "days").endOf("day").valueOf(),
         },
-        { 
-          label: "Last 7 Days", 
-          start: moment().subtract(7, 'days').startOf('day').valueOf(), 
-          end: moment().endOf('day').valueOf()
+        {
+          label: "Last 7 Days",
+          start: moment().subtract(7, "days").startOf("day").valueOf(),
+          end: moment().endOf("day").valueOf(),
         },
-        { 
-          label: "Last 30 Days", 
-          start: moment().subtract(30, 'days').startOf('day').valueOf(), 
-          end: moment().endOf('day').valueOf() 
+        {
+          label: "Last 30 Days",
+          start: moment().subtract(30, "days").startOf("day").valueOf(),
+          end: moment().endOf("day").valueOf(),
         },
-        { 
+        {
           label: "This Month",
-          start: moment().subtract(1, 'months').startOf('day').valueOf(), 
-          end: moment().endOf('day').valueOf() 
+          start: moment().subtract(1, "months").startOf("day").valueOf(),
+          end: moment().endOf("day").valueOf(),
         },
-        { 
+        {
           label: "Custom Range",
-          start: moment().subtract(1, 'months').startOf('day').valueOf(), 
-          end: moment().endOf('day').valueOf() 
-        }
+          start: moment().subtract(1, "months").startOf("day").valueOf(),
+          end: moment().endOf("day").valueOf(),
+        },
       ],
-      showBanner: true
+      showBanner: true,
     };
   },
   computed: {
@@ -333,7 +368,7 @@ export default {
       },
       set(val) {
         this.toggleSearchModal(val);
-      }
+      },
     },
     sidebarShow: {
       get() {
@@ -341,10 +376,10 @@ export default {
       },
       set(val) {
         this.setSidebarDrawer(val);
-      }
+      },
     },
-    dateRangeText () {
-      return this.dates.join(' ~ ')
+    dateRangeText() {
+      return this.dates.join(" ~ ");
     },
     isListViewMode: {
       get() {
@@ -352,8 +387,8 @@ export default {
       },
       set(val) {
         this.toggleViewMode(val == 1 ? true : false);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions(["toggleSearchModal", "toggleViewMode"]),
@@ -382,14 +417,14 @@ export default {
 
     transformItems(items) {
       if (items.length > 0) {
-        this.hideBanner()
+        this.hideBanner();
       }
       return [];
     },
 
     hideBanner() {
       this.showBanner = false;
-    }
+    },
   },
   mounted() {
     window.moment = moment;
@@ -456,6 +491,12 @@ li.ais-Hits-item {
   float: left;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+.thumbnail-image {
+  max-width: 260px !important;
+  min-width: 260px !important;
+  width: 260px !important;
+}
 /* } */
 
 @media (min-width: 1900px) {
@@ -471,7 +512,7 @@ li.ais-Hits-item {
     padding-left: 235px;
   }
   @media (max-width: 960px) {
-    padding-left: 0!important;
+    padding-left: 0 !important;
   }
 }
 </style>
