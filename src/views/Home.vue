@@ -165,9 +165,8 @@
                               border-bottom
                               pa-5
                               d-flex
-                              flex-column
-                              align-center
                             "
+                            :class="viewMode ? 'flex-wrap flex-sm-nowrap': 'flex-column align-center'"
                           >
                             <div
                               class="
@@ -177,6 +176,7 @@
                                 align-center
                                 thumbnail-image
                               "
+                              :class="viewMode ? 'mx-auto mx-sm-0' : ''"
                             >
                               <img
                                 :src="'https://cdn-demo.algolia.com/bestbuy-0118/4984700_sb.jpg'"
