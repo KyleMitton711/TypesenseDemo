@@ -18,7 +18,7 @@
         <v-btn text v-bind="attrs" v-on="on"> Filters </v-btn>
       </template>
 
-      <v-card class="filter-content px-5" height="300px">
+      <v-card class="filter-content px-5 pb-2" min-height="300px">
         <v-tabs v-model="filterTab" background-color="transparent">
           <v-tab>Manufacturer</v-tab>
           <v-tab>Category</v-tab>
@@ -56,7 +56,7 @@
                             :style="{
                               fontWeight: item.isRefined ? 'bold' : '',
                             }"
-                            class="black--text"
+                            class="black--text ais-RefinementList-labelText"
                             @click.prevent="filter(refine, item.value)"
                           >
                             <ais-highlight attribute="item" :hit="item" />
@@ -257,8 +257,7 @@ export default {
       width: 33%;
       color: black;
       // max-width: 300px;
-      padding-left: 20px;
-      padding-right: 20px;
+      padding: 0 20px;
       @media (max-width: 600px) {
         width: 100%;
       }
