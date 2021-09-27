@@ -401,6 +401,16 @@ export default {
       }
     }
   },
+  watch: {
+    customFacetFilters: {
+      handler: function(val) {
+        if (val.length > 0) {
+          this.hideBanner();
+        }
+      },
+      deep: true
+    }
+  },
   methods: {
     ...mapActions(["toggleSearchModal", "toggleViewMode", "setQuery"]),
     ...mapMutations({
