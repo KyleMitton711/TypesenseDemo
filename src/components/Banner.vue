@@ -1,12 +1,11 @@
 <template>
   <v-row>
     <v-col cols="12" class="black white--text banner px-md-16 py-0">
-      <h1>Hello World</h1>
-      <p>Amazon - Fire TV Stick with Alexa Voice Remote - Black</p>
-      <div class="d-flex align-center">
-        <v-btn class="mr-2" @click="learnMoreDialog = true"> learn more </v-btn>
-        <v-btn class="mr-2" @click="searchModal = true"> search </v-btn>
-        <!-- <span>for manufacturer</span> -->
+      <h1>Software discovery</h1>
+      <p>Find software for your business, organization or personal use.</p>
+      <div class="d-flex align-center">        
+        <v-btn large tile color="error" class="mr-2" @click="searchModal = true"> search </v-btn>
+        <v-btn text dark large class="" @click="learnMoreDialog = true">For Vendors</v-btn>
       </div>
     </v-col>
     <v-dialog
@@ -47,7 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 .banner {
-  height: 250px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
