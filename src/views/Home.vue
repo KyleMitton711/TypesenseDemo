@@ -237,7 +237,7 @@
         <v-card-text class="pa-0">
           <v-container>
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" class="py-0">
                 <ais-instant-search
                   index-name="items"
                   :search-client="searchClient"

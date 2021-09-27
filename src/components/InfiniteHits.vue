@@ -3,8 +3,8 @@
     <v-col
       cols="12"
       :sm="viewMode ? 12 : 6"
-      :lg="viewMode ? 12 : 4"
-      :xl="viewMode ? 12 : 3"
+      :md="viewMode ? 12 : 4"
+      :lg="viewMode ? 12 : 3"
       v-for="hit in state.hits"
       :key="hit.objectID"
     >

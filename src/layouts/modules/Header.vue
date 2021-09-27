@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app clipped-left clipped-right color="white" hide-on-scroll>
+  <v-app-bar app clipped-left clipped-right color="white" class="header-menu" hide-on-scroll>
     <div @click="showhideLogo">
       <v-app-bar-nav-icon @click="setSidebarDrawer(!Sidebar_drawer)" />
     </div>
@@ -42,9 +42,14 @@
                       }"
                     >
                       <div class="ais-RefinementList-searchBox">
-                        <input
-                          @input="searchForItems($event.currentTarget.value)"
-                        />
+                        <v-text-field
+                          @input="searchForItems(filterSearchKeyword)"
+                          v-model="filterSearchKeyword"
+                          clearable
+                          outlined
+                          hide-details
+                        >
+                        </v-text-field>
                       </div>
                       <ul class="ais-RefinementList-list">
                         <li v-if="isFromSearch && !items.length">
@@ -89,14 +94,9 @@
     </v-menu>
     <v-spacer />
     <!---right part -->
-    <!---User -->
     <v-btn fab icon @click="searchModal = true">
       <v-icon>mdi-magnify</v-icon>
     </v-btn>
-    <v-btn fab icon>
-      <v-icon>mdi-pencil</v-icon>
-    </v-btn>
-    <!---User -->
   </v-app-bar>
 </template>
 <script>
@@ -116,6 +116,7 @@ export default {
       default: false,
     },
   },
+
   data() {
     return {
       showLogo: true,
@@ -134,6 +135,7 @@ export default {
       filterTab: null,
       manufacturerFilters: [],
       filterMenu: false,
+      filterSearchKeyword: null
     };
   },
 
@@ -236,6 +238,8 @@ export default {
   left: 0 !important;
   max-width: 100vw !important;
   border-radius: 0 !important;
+  border-bottom: 1px solid #AAA;
+  border-top: 1px solid #AAA;
 }
 
 ::v-deep .ais-CurrentRefinements {
@@ -279,21 +283,21 @@ export default {
   .ais-RefinementList-searchBox {
     position: absolute;
     bottom: 0px;
-    border: 1px solid black;
+    // border: 1px solid black;
     padding: 10px;
-    width: 80%;
+    width: 100%;
 
-    form {
-      width: 100%;
+    // form {
+    //   width: 100%;
 
-      input {
-        width: calc(100% - 35px);
-      }
-    }
+    //   input {
+    //     width: calc(100% - 35px);
+    //   }
+    // }
 
-    input:focus-visible {
-      outline: none;
-    }
+    // input:focus-visible {
+    //   outline: none;
+    // }
   }
 }
 </style>
