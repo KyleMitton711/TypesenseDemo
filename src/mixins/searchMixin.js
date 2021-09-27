@@ -26,7 +26,6 @@ export default {
   data() {
     return {
       searchClient,
-      query: "",
       page: 1,
       searchKeyword: "",
       hitsPerPage: 5,

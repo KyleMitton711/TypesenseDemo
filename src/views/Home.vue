@@ -157,6 +157,7 @@
                         :query="query"
                         :page="page"
                         :hitsPerPage="hitsPerPage"
+                        :facetFilters="customFacetFilters"
                       />
                       <infinite-hits @filter-selected="hideBanner">
                         <template slot="item" slot-scope="{ item }">
@@ -316,7 +317,6 @@ export default {
   data() {
     return {
       // searchClient,
-      query: "",
       page: 1,
       searchKeyword: "",
       hitsPerPage: 5,
@@ -360,7 +360,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["searchDialog", "viewMode"]),
+    ...mapGetters(["searchDialog", "viewMode", "facetFilters", "customQuery"]),
     ...mapState(["Sidebar_drawer"]),
     searchModal: {
       get() {
@@ -389,9 +389,20 @@ export default {
         this.toggleViewMode(val == 1 ? true : false);
       },
     },
+    customFacetFilters() {
+      return this.facetFilters.length > 0 ? this.facetFilters.map(item => `${item.attribute}:${item.value}`) : "";
+    },
+    query: {
+      get() {
+        return this.customQuery;
+      },
+      set(val) {
+        this.setQuery(val);
+      }
+    }
   },
   methods: {
-    ...mapActions(["toggleSearchModal", "toggleViewMode"]),
+    ...mapActions(["toggleSearchModal", "toggleViewMode", "setQuery"]),
     ...mapMutations({
       setSidebarDrawer: "SET_SIDEBAR_DRAWER",
     }),

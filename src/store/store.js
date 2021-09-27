@@ -16,7 +16,9 @@ export default new Vuex.Store({
     setHorizontalLayout: false, // Horizontal layout
     authModal: "",
     isListViewMode: true,
-    showMainFilterMenu: false
+    showMainFilterMenu: false,
+    facetFilters: [],
+    query: ""
   },
   mutations: {
     SET_SIDEBAR_DRAWER(state, payload) {
@@ -46,6 +48,12 @@ export default new Vuex.Store({
     SET_MAIN_FILTER_MENU(state, payload) {
       state.showMainFilterMenu = payload;
     },
+    SET_FACETFILTER(state, payload) {
+      state.facetFilters = Object.assign([], payload);
+    },
+    SET_QUERY(state, payload) {
+      state.query = payload;
+    }
   },
   actions: {
     toggleAuthModal({ commit }, show) {
@@ -60,12 +68,20 @@ export default new Vuex.Store({
     toggleMainFilterMenu({ commit }, mode) {
       commit('SET_MAIN_FILTER_MENU', mode);
     },
+    setFacetFilters({ commit }, filters) {
+      commit('SET_FACETFILTER', filters);
+    },
+    setQuery({ commit }, query) {
+      commit('SET_QUERY', query);
+    },
   },
   getters: {
     authModal: (state) => state.authModal,
     searchDialog: (state) => state.searchDialog,
     viewMode: (state) => state.isListViewMode,
-    showMainFilterMenu: (state) => state.showMainFilterMenu
+    showMainFilterMenu: (state) => state.showMainFilterMenu,
+    facetFilters: (state) => state.facetFilters,
+    customQuery: (state) => state.query
   },
   namespace: true,
   modules: {

@@ -135,7 +135,7 @@ export default {
       filterTab: null,
       manufacturerFilters: [],
       filterMenu: false,
-      filterSearchKeyword: null
+      filterSearchKeyword: null,
     };
   },
 
@@ -164,7 +164,7 @@ export default {
     ...mapMutations({
       setSidebarDrawer: "SET_SIDEBAR_DRAWER",
     }),
-    ...mapActions(["toggleSearchModal", "toggleMainFilterMenu"]),
+    ...mapActions(["toggleSearchModal", "toggleMainFilterMenu", "setFacetFilters"]),
     showhideLogo: function () {
       this.showLogo = !this.showLogo;
     },
@@ -202,6 +202,7 @@ export default {
     manufacturerFilters: {
       handler: function (val) {
         console.log(val);
+        this.setFacetFilters(val);
       },
       deep: true,
     },
