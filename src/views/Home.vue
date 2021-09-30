@@ -2,7 +2,7 @@
   <v-container class="fill-height justify-center" tag="section">
     <v-row justify="center">
       <v-col lg="11" md="11" sm="8" xl="7">
-        <v-card class="elevation-4 px-4">
+        <v-card class="elevation-0 px-4">
           <v-row>
             <v-col cols="12" class="pa-5">
               <h1 class="text-center">> Software</h1>
@@ -133,7 +133,7 @@ export default {
       if (selected) {
         setTimeout(() => {
           this.query = selected;
-          this.$router.push({ name: "Result" });
+          this.$router.push({ name: "Search" });
           this.toggleSearchModal(false);
         }, 400);
       }

@@ -323,6 +323,10 @@ export default {
   border-top: 1px solid #AAA;
 }
 
+.header-menu {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1)!important;
+}
+
 ::v-deep .ais-CurrentRefinements {
   .ais-CurrentRefinements-list {
     height: 0;

@@ -1,6 +1,6 @@
 // pages
 import Home from "@/views/Home";
-import Result from "@/views/Result";
+import Search from "@/views/Search";
 
 // layouts
 import DefaultLayout from "@/layouts/DefaultLayout";
@@ -19,9 +19,9 @@ export const routes = [
         component: DefaultLayout,
         children: [
             {
-                name: "Result",
-                path: "/result",
-                component: Result,
+                name: "Search",
+                path: "/search",
+                component: Search,
                 meta: {
                     publicRoute: true
                 }

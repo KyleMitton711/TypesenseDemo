@@ -177,10 +177,10 @@
                                 align-center
                                 thumbnail-image
                               "
-                              :class="viewMode ? 'mx-auto mx-sm-0' : ''"
+                              :class="viewMode ? 'mx-auto mx-sm-0 mr-sm-4' : ''"
                             >
                               <img
-                                :src="'https://cdn-demo.algolia.com/bestbuy-0118/4984700_sb.jpg'"
+                                :src="require('@/assets/placeholder-img.jpg')"
                                 align="left"
                                 class=""
                               />
@@ -308,7 +308,7 @@ import InfiniteHits from "@/components/InfiniteHits";
 import searchMixin from "@/mixins/searchMixin";
 
 export default {
-  name: "Result",
+  name: "Search",
   mixins: [searchMixin],
   components: {
     InfiniteHits,
@@ -517,9 +517,9 @@ li.ais-Hits-item {
 }
 
 .thumbnail-image {
-  max-width: 260px !important;
-  min-width: 260px !important;
-  width: 260px !important;
+  max-width: 300px !important;
+  min-width: 300px !important;
+  width: 300px !important;
 }
 /* } */
 
