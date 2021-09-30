@@ -32,7 +32,7 @@ export default {
   watch: {
     state(val) {
       if (val.results.page == 0) {
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
       }
     },
   },

@@ -410,6 +410,7 @@ export default {
     },
     query(val) {
       this.page = 0;
+      window.scrollTo(0, 0);
     }
   },
   methods: {
