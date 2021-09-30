@@ -2,11 +2,6 @@
   <v-app id="default">
     <v-main>
       <Header />
-      <!-- <div class="w-100">
-        <HorizontalSidebar
-          :expand-on-hover.sync="expandOnHover"
-        ></HorizontalSidebar>
-      </div> -->
       <router-view />
     </v-main>
   </v-app>
@@ -15,12 +10,10 @@
 <script>
 import { mapActions } from "vuex";
 import Header from "./modules/Header";
-// import HorizontalSidebar from "./modules/HorizontalSidebar";
 export default {
   name: "DefaultLayout",
   components: {
     Header, 
-    // HorizontalSidebar 
   },
   data: () => ({
     expandOnHover: false,
@@ -33,5 +26,6 @@ export default {
 .v-main {
   max-width: 100vw;
   margin: 0;
+  background-color: white;
 }
 </style>

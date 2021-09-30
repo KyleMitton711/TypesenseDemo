@@ -1,9 +1,65 @@
 <template>
-  <v-app-bar app clipped-left clipped-right color="white" class="header-menu" hide-on-scroll>
-    <div @click="showhideLogo">
+  <v-app-bar app clipped-left clipped-right color="white" class="header-menu border-bottom" hide-on-scroll>
+    <div @click="showhideLogo" class="mr-4">
       <v-app-bar-nav-icon @click="setSidebarDrawer(!Sidebar_drawer)" />
     </div>
-    <v-menu
+    <a href="/" class="d-flex mr-4">
+      <img src="@/assets/logo.svg" width="45px" height="50px"/>
+    </a>
+    <ais-instant-search
+      index-name="items"
+      :search-client="searchClient"
+    >
+      <ais-index index-name="items">
+        <ais-configure :hitsPerPage="5" />
+        <ais-autocomplete>
+          <template slot-scope="{ indices, refine }">
+            <v-combobox
+              outlined
+              dense
+              hide-details
+              :items="
+                indices
+                  .filter(({ indexId }) => indexId === 'items')[0]
+                  .hits.map((item) => {
+                    let name = item.name.toLowerCase();
+                    let description = item.description.toLowerCase();
+                    let keyword = searchKeyword || '';
+                    var matched = [];
+                    if (keyword.length > 0) {
+                      matched = (name + ' ' + description)
+                        .split(' ')
+                        .filter(
+                          (item) =>
+                            item
+                              .toLowerCase()
+                              .indexOf(keyword.toLowerCase()) == 0
+                        );
+                    }
+                    return matched;
+                  })
+                  .flat(1)
+                  .sort()
+                  .filter(function (item, pos, ary) {
+                    return !pos || item != ary[pos - 1];
+                  })
+              "
+              placeholder="Search here…"
+              @update:search-input="startSearch(refine)"
+              :search-input.sync="searchKeyword"
+              v-model="query"
+              clearable
+              hide-selected
+            >
+              <template slot="append">
+                <v-icon>mdi-magnify</v-icon>
+              </template>
+            </v-combobox>
+          </template>
+        </ais-autocomplete>
+      </ais-index>
+    </ais-instant-search>
+    <!-- <v-menu
       open-on-hover
       :close-on-click="false"
       :close-on-content-click="false"
@@ -68,12 +124,6 @@
                           </a>
                         </li>
                       </ul>
-                      <!-- <button
-                        @click="toggleShowMore"
-                        :disabled="!canToggleShowMore"
-                      >
-                        {{ !isShowingMore ? "Show more" : "Show less" }}
-                      </button> -->
                     </template>
                   </ais-refinement-list>
                 </ais-index>
@@ -91,16 +141,27 @@
           </v-tabs-items>
         </ais-instant-search>
       </v-card>
-    </v-menu>
+    </v-menu> -->
     <v-spacer />
     <!---right part -->
-    <v-btn fab icon @click="searchModal = true">
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
+    <a class="black--text" @click="learnMoreDialog = true">
+      Learn More
+    </a>
+    &nbsp; | &nbsp;
+    <a class="black--text" @click="forVendorsDialog = true">
+      For Vendors
+    </a>
+    <v-dialog v-model="learnMoreDialog" width="500">
+      <v-card height="400px"> </v-card>
+    </v-dialog>
+    <v-dialog v-model="forVendorsDialog" width="500">
+      <v-card height="400px"> </v-card>
+    </v-dialog>
   </v-app-bar>
 </template>
 <script>
 // Utilities
+import debounce from "debounce";
 import searchMixin from "@/mixins/searchMixin";
 import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 export default {
@@ -136,12 +197,16 @@ export default {
       manufacturerFilters: [],
       filterMenu: false,
       filterSearchKeyword: null,
+      learnMoreDialog: false,
+      forVendorsDialog: false,
+      searchKeyword: null,
+      isMounted: false
     };
   },
 
   computed: {
     ...mapState(["navbarColor", "Sidebar_drawer", "searchDialog"]),
-    ...mapGetters(["showMainFilterMenu"]),
+    ...mapGetters(["showMainFilterMenu", "customQuery"]),
     searchModal: {
       get() {
         return this.searchDialog;
@@ -158,13 +223,21 @@ export default {
         this.toggleMainFilterMenu(val);
       },
     },
+    query: {
+      get() {
+        return this.customQuery;
+      },
+      set(val) {
+        this.setQuery(val);
+      },
+    },
   },
 
   methods: {
     ...mapMutations({
       setSidebarDrawer: "SET_SIDEBAR_DRAWER",
     }),
-    ...mapActions(["toggleSearchModal", "toggleMainFilterMenu", "setFacetFilters"]),
+    ...mapActions(["toggleSearchModal", "toggleMainFilterMenu", "setFacetFilters", "setQuery"]),
     showhideLogo: function () {
       this.showLogo = !this.showLogo;
     },
@@ -195,7 +268,10 @@ export default {
       });
       action(val);
       this.filterMenu = false;
-    }
+    },
+    startSearch: debounce(function (refine) {
+      refine();
+    }, 500),
   },
 
   watch: {
@@ -207,6 +283,10 @@ export default {
       deep: true,
     },
   },
+
+  mounted() {
+    this.isMounted = true;
+  }
 };
 </script>
 
@@ -239,7 +319,7 @@ export default {
   left: 0 !important;
   max-width: 100vw !important;
   border-radius: 0 !important;
-  border-bottom: 1px solid #AAA;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-top: 1px solid #AAA;
 }
 
