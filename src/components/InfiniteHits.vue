@@ -1,5 +1,8 @@
 <template>
   <v-row v-if="state" class="hits-list">
+    <v-col cols="12">
+      <h3>Found <b>{{ state.results.nbHits }}</b> videos</h3>
+    </v-col>
     <v-col
       cols="12"
       :sm="viewMode ? 12 : (Sidebar_drawer ? 6 : 4)"
@@ -31,6 +34,7 @@ export default {
   },
   watch: {
     state(val) {
+      console.log(val)
       if (val.results.page == 0) {
         // window.scrollTo(0, 0);
       }

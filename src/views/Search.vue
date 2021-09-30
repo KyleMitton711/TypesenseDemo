@@ -355,6 +355,7 @@ export default {
         },
       ],
       showBanner: true,
+      manufacturerFilters: 0
     };
   },
   computed: {
@@ -392,6 +393,9 @@ export default {
     },
     query: {
       get() {
+        if (!this.customQuery) {
+          return "*";
+        }
         return this.customQuery;
       },
       set(val) {
@@ -408,9 +412,14 @@ export default {
       },
       deep: true
     },
-    query(val) {
+    query(oldVal, newVal) {
       this.page = 0;
       window.scrollTo(0, 0);
+    },
+    manufacturerFilters(val) {
+      if (val > 0) {
+        window.scrollTo(0, 0);
+      }
     }
   },
   methods: {
@@ -439,7 +448,11 @@ export default {
 
     transformItems(items) {
       if (items.length > 0) {
+        let tmp = [...items[0].refinements];
+        this.manufacturerFilters = tmp.length;
         this.hideBanner();
+      } else {
+        this.manufacturerFilters = 0;
       }
       return [];
     },
