@@ -3,6 +3,7 @@
     <v-main>
       <Header />
       <router-view />
+      <Footer></Footer> 
     </v-main>
   </v-app>
 </template>
@@ -10,10 +11,12 @@
 <script>
 import { mapActions } from "vuex";
 import Header from "./modules/Header";
+import Footer from './modules/Footer';
 export default {
   name: "DefaultLayout",
   components: {
     Header, 
+    Footer
   },
   data: () => ({
     expandOnHover: false,

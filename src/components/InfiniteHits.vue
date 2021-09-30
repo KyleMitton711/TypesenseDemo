@@ -1,7 +1,7 @@
 <template>
   <v-row v-if="state" class="hits-list">
     <v-col cols="12">
-      <h3>Found <b>{{ state.results.nbHits }}</b> videos</h3>
+      <h3>Found <b>{{ state.results.nbHits | formatCount }}</b> videos</h3>
     </v-col>
     <v-col
       cols="12"

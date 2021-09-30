@@ -21,6 +21,13 @@ Vue.config.productionTip = false;
 Vue.use(Vuebar);
 Vue.use(filter);
 
+var numeral = require("numeral");
+
+Vue.filter('formatCount', function (value) {
+  if (!value) return ''
+  return numeral(value).format('0,0');
+})
+
 new Vue({
   vuetify,
   store,
