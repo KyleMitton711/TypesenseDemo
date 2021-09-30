@@ -410,7 +410,6 @@ export default {
     },
     query(val) {
       this.page = 0;
-      window.scrollTo(0, 0);
     }
   },
   methods: {
@@ -421,7 +420,6 @@ export default {
 
     onSelect(selected) {
       this.page = 0;
-      window.scrollTo(0, 0);
       if (selected) {
         this.showBanner = false;
         setTimeout(() => {
