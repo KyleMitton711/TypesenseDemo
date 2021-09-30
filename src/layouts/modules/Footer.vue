@@ -1,5 +1,5 @@
 <template>
-    <v-footer app class="footerpart" inset>
+    <v-footer class="footerpart" inset :fixed="false">
       <v-col cols="12">
         <span>© {{ new Date().getFullYear() }} — Material Pro Admin by <a href="https://www.wrappixel.com/">wrappixel.com</a></span>
       </v-col>
