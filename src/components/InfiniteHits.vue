@@ -2,9 +2,9 @@
   <v-row v-if="state" class="hits-list">
     <v-col
       cols="12"
-      :sm="viewMode ? 12 : 6"
-      :md="viewMode ? 12 : 4"
-      :lg="viewMode ? 12 : 3"
+      :sm="viewMode ? 12 : (Sidebar_drawer ? 6 : 4)"
+      :lg="viewMode ? 12 : (Sidebar_drawer ? 4 : 3)"
+      :xl="viewMode ? 12 : (Sidebar_drawer ? 3 : 2)"
       v-for="hit in state.hits"
       :key="hit.objectID"
     >
@@ -17,7 +17,7 @@
 <script>
 import { createWidgetMixin } from "vue-instantsearch";
 import { connectInfiniteHits } from "instantsearch.js/es/connectors";
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "InfiniteHits",
@@ -38,6 +38,7 @@ export default {
   },
   computed: {
     ...mapGetters(["viewMode"]),
+    ...mapState(["Sidebar_drawer"]),
   },
 };
 </script>

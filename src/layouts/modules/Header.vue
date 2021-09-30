@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app clipped-left clipped-right color="white" class="header-menu border-bottom" hide-on-scroll>
+  <v-app-bar app clipped-left clipped-right color="white" class="header-menu border-bottom" height="75" hide-on-scroll>
     <div @click="showhideLogo" class="mr-4">
       <v-app-bar-nav-icon @click="setSidebarDrawer(!Sidebar_drawer)" />
     </div>
