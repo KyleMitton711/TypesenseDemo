@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="pt-0">
-    <!-- <Banner v-if="showBanner" /> -->
     <v-row>
       <v-col cols="12">
         <div class="d-flex justify-end">
@@ -232,69 +231,6 @@
         </ais-instant-search>
       </v-col>
     </v-row>
-    <v-dialog v-model="searchModal" width="500" permanent>
-      <v-card>
-        <v-card-text class="pa-0">
-          <v-container>
-            <v-row>
-              <v-col cols="12" class="py-0">
-                <ais-instant-search
-                  index-name="items"
-                  :search-client="searchClient"
-                >
-                  <ais-index index-name="items">
-                    <ais-configure :hitsPerPage="5" />
-                    <ais-autocomplete>
-                      <template slot-scope="{ indices, refine }">
-                        <v-combobox
-                          dense
-                          solo
-                          hide-details
-                          :items="
-                            indices
-                              .filter(({ indexId }) => indexId === 'items')[0]
-                              .hits.map((item) => {
-                                let name = item.name.toLowerCase();
-                                let description =
-                                  item.description.toLowerCase();
-                                let keyword = searchKeyword || '';
-                                var matched = [];
-                                if (keyword.length > 0) {
-                                  matched = (name + ' ' + description)
-                                    .split(' ')
-                                    .filter(
-                                      (item) =>
-                                        item
-                                          .toLowerCase()
-                                          .indexOf(keyword.toLowerCase()) == 0
-                                    );
-                                }
-                                return matched;
-                              })
-                              .flat(1)
-                              .sort()
-                              .filter(function (item, pos, ary) {
-                                return !pos || item != ary[pos - 1];
-                              })
-                          "
-                          placeholder="Search here…"
-                          @update:search-input="startSearch(refine)"
-                          :search-input.sync="searchKeyword"
-                          @change="onSelect"
-                          clearable
-                          hide-selected
-                        >
-                        </v-combobox>
-                      </template>
-                    </ais-autocomplete>
-                  </ais-index>
-                </ais-instant-search>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -303,7 +239,6 @@ import debounce from "debounce";
 import moment from "moment";
 import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 import InfiniteHits from "@/components/InfiniteHits";
-// import Banner from "@/components/Banner";
 import searchMixin from "@/mixins/searchMixin";
 
 export default {
@@ -311,7 +246,6 @@ export default {
   mixins: [searchMixin],
   components: {
     InfiniteHits,
-    // Banner,
   },
   data() {
     return {
