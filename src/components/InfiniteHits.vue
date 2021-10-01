@@ -1,8 +1,6 @@
 <template>
   <v-row v-if="state" class="hits-list">
-    <v-col cols="12">
-      <h3>Found <b>{{ state.results.nbHits | formatCount }}</b> videos</h3>
-    </v-col>
+    <h3 class="videos-count">Found <b>{{ state.results.nbHits | formatCount }}</b> videos</h3>
     <v-col
       cols="12"
       :sm="viewMode ? 12 : (Sidebar_drawer ? 6 : 4)"
@@ -50,5 +48,11 @@ export default {
 <style scoped>
 .sentinel {
   list-style-type: none;
+}
+
+.videos-count {
+  position: absolute;
+  left: 15px;
+  top: -50px;
 }
 </style>

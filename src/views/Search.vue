@@ -14,14 +14,14 @@
           </v-btn-toggle>
         </div>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" class="pt-0">
         <ais-instant-search index-name="items" :search-client="searchClient">
           <v-row no-gutters>
-            <v-col cols="12">
+            <v-col cols="12" class="pt-0">
               <ais-current-refinements :transform-items="transformItems" />
               <ais-index index-name="items">
                 <v-row>
-                  <v-col cols="12" style="position: relative">
+                  <v-col cols="12" class="py-0" style="position: relative">
                     <v-navigation-drawer
                       v-model="sidebarShow"
                       class="px-3"
